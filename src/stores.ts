@@ -31,9 +31,7 @@ interface Settings {
   filterLength: number;
   cameraState?: ReturnType<Camera["getState"]>;
   labelThreshold: number;
-  nodesGravity: number;
-  scalingRatio: number;
-  edgeWeightInfluence: number;
+  freezeSimulation: boolean;
   filters: NodeFilter[];
   themeMode: "dark" | "light";
 }
@@ -93,9 +91,7 @@ export const settings: Writable<Settings> = writable({
   filter: false,
   filterLength: 3,
   labelThreshold: 100,
-  nodesGravity: 1,
-  scalingRatio: 1,
-  edgeWeightInfluence: 0.5,
+  freezeSimulation: false,
   filters: logseq.settings?.filters || [],
   themeMode: "dark",
 });

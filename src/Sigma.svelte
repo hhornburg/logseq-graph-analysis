@@ -84,6 +84,16 @@
     }
   }
 
+  $: if ($settings.freezeSimulation) {
+    if (fa2Layout) {
+      fa2Layout.stop();
+    }
+  } else {
+    if (fa2Layout) {
+      fa2Layout.start();
+    }
+  }
+
   afterUpdate(() => {
     if (!sigma) return;
     let defaultSettings = forceAtlas2.inferSettings(size);
@@ -92,12 +102,6 @@
     fa2Layout = new FA2Layout(graph, {
       settings: {
         ...defaultSettings,
-        gravity: $settings.nodesGravity * defaultSettings.gravity,
-        strongGravityMode: true,
-        scalingRatio: $settings.scalingRatio * defaultSettings.scalingRatio,
-        barnesHutTheta: 0.2,
-        edgeWeightInfluence: $settings.edgeWeightInfluence * -1, // reverse fills more natural
-        slowDown: 100,
       },
     });
     fa2Layout.start();
@@ -168,7 +172,7 @@
         res.color = red;
         res.size = maxSize(
           $settings.bubbleSize * adamicAdarResults[node].measure,
-          32
+          32,
         );
         res.label = `${adamicAdarResults[node].measure} ${data.label}`;
       }
@@ -233,19 +237,19 @@
         });
       });
       if (foundNodeIds) {
-      graph.updateEachNodeAttributes((node, attr: Attributes) => {
-        attr.highlighted = false;
-        attr.size = (attr.size ?? attr.size) + 2;
-        if (foundNodeIds?.includes(node)) {
-          attr.color = orange;
-          attr.highlighted = true;
+        graph.updateEachNodeAttributes((node, attr: Attributes) => {
+          attr.highlighted = false;
           attr.size = (attr.size ?? attr.size) + 2;
+          if (foundNodeIds?.includes(node)) {
+            attr.color = orange;
+            attr.highlighted = true;
+            attr.size = (attr.size ?? attr.size) + 2;
+            return attr;
+          }
           return attr;
-        }
-        return attr;
-      })
+        });
+      }
     }
-  }
   }
 
   $: if (sigma && ($settings.pathA || $settings.pathB || $settings.search)) {

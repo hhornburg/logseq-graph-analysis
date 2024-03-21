@@ -33,160 +33,136 @@
   }
 
   const modeTooltips = {
-    [Mode.Navigate]: "Observe your graph. Click to open page, shift-click to open in side bar",
+    [Mode.Navigate]:
+      "Observe your graph. Click to open page, shift-click to open in side bar",
     [Mode.ShortestPath]: "Shortest path between two nodes",
     [Mode.AdamicAdar]: "Find secret connections between your notes",
-    [Mode.CoCitation]: "Checks how alike documents are by looking at how close their shared references are",
+    [Mode.CoCitation]:
+      "Checks how alike documents are by looking at how close their shared references are",
   };
 </script>
 
 <div class="settings">
   <section>
-  <div class="input-row" id="search">
-    <input type="search" placeholder="Search"bind:value={$settings.search} />
-  </div>
-  <div class="input-row">
-    <label for="filter">keep only found</label>
-    <input type="checkbox" bind:checked={$settings.filter} />
-  </div>
-  {#if $settings.filter}
-    <div class="input-row">
-      <label for="nhops">n hops</label>
-      <input
-        type="range"
-        min="1"
-        step="1"
-        max="10"
-        bind:value={$settings.filterLength}
-      />
-    </div>
-  {/if}
-  </section>
-  <section>
-  <h2>Mode</h2>
-  <div class="input-row">
-    <select bind:value={$settings.mode}>
-      {#each Object.entries(Mode) as [key, val]}
-        <option value={val} title={modeTooltips[val]}>{val}</option>
-      {/each}
-    </select>
-  </div>
-  {#if $settings.mode === Mode.ShortestPath}
-    <div class="input-row">
-      <label for="directed">directed?</label>
-      <input type="checkbox" bind:checked={$settings.directed} />
+    <div class="input-row" id="search">
+      <input type="search" placeholder="Search" bind:value={$settings.search} />
     </div>
     <div class="input-row">
-      <label for="path">path a</label>
-      <input type="search" bind:value={$settings.pathA} />
+      <label for="filter">keep only found</label>
+      <input type="checkbox" bind:checked={$settings.filter} />
     </div>
-    <div class="input-row">
-      <label for="path">path b</label>
-      <input type="search" bind:value={$settings.pathB} />
-    </div>
-  {/if}
-  {#if $settings.mode === Mode.AdamicAdar || $settings.mode === Mode.CoCitation}
-    <div class="input-row">
-      <label for="path">path a</label>
-      <input type="search" bind:value={$settings.pathA} />
-    </div>
-    <div class="input-row">
-      <label for="bubbleSize">bubble size</label>
-      <input
-        type="range"
-        min="0.01"
-        step="0.1"
-        max="10"
-        bind:value={$settings.bubbleSize}
-      />
-    </div>
-  {/if}
-  </section>
-  <section>
-  <div>
-    <div class="input-row">
-      <h2>Filters</h2>
-      <button on:click={addFilter}>+</button>
-    </div>
-    {#each $settings.filters as { id, searchString, searchType, searchColor, foundNodeIds } (id)}
-      <div class="filter">
-        <NodeFilter
-          {id}
-          {searchString}
-          {searchColor}
-          {searchType}
-          {foundNodeIds}
-          on:search={handleSearch}
-          on:destroyed={() => removeFilter(id)}
+    {#if $settings.filter}
+      <div class="input-row">
+        <label for="nhops">n hops</label>
+        <input
+          type="range"
+          min="1"
+          step="1"
+          max="10"
+          bind:value={$settings.filterLength}
         />
-        <button on:click={() => removeFilter(id)}>&#x2715</button>
       </div>
-      {:else}
-      <p class="help-message">Hit plus button to add filters</p>
-    {/each}
-  </div>
+    {/if}
   </section>
   <section>
-  <h2> Display </h2>
-  <div class="input-row">
-    <label for="labelThreshold">Label threshold</label>
-    <input
-      type="range"
-      min="0"
-      step="0.05"
-      max="10"
-      bind:value={$settings.labelThreshold}
-    />
-  </div>
-  <div class="input-row">
-    <label for="gravity">Nodes gravity</label>
-    <input
-      type="range"
-      min="0.01"
-      step="0.01"
-      max="20"
-      bind:value={$settings.nodesGravity}
-    />
-  </div>
-  <div class="input-row">
-    <label for="scalingRatio">Scaling ratio</label>
-    <input
-      type="range"
-      min="0.001"
-      step="0.0001"
-      max="1.5"
-      bind:value={$settings.scalingRatio}
-    />
-  </div>
-  <div class="input-row">
-    <label for="edgeWeightInfluence">Edge weight impact</label>
-    <input
-      type="range"
-      min="-2"
-      step="0.1"
-      max="2"
-      bind:value={$settings.edgeWeightInfluence}
-    />
-  </div>
-  {#if $settings.filter}
+    <h2>Mode</h2>
     <div class="input-row">
-      <label for="nhops">n hops</label>
+      <select bind:value={$settings.mode}>
+        {#each Object.entries(Mode) as [key, val]}
+          <option value={val} title={modeTooltips[val]}>{val}</option>
+        {/each}
+      </select>
+    </div>
+    {#if $settings.mode === Mode.ShortestPath}
+      <div class="input-row">
+        <label for="directed">directed?</label>
+        <input type="checkbox" bind:checked={$settings.directed} />
+      </div>
+      <div class="input-row">
+        <label for="path">path a</label>
+        <input type="search" bind:value={$settings.pathA} />
+      </div>
+      <div class="input-row">
+        <label for="path">path b</label>
+        <input type="search" bind:value={$settings.pathB} />
+      </div>
+    {/if}
+    {#if $settings.mode === Mode.AdamicAdar || $settings.mode === Mode.CoCitation}
+      <div class="input-row">
+        <label for="path">path a</label>
+        <input type="search" bind:value={$settings.pathA} />
+      </div>
+      <div class="input-row">
+        <label for="bubbleSize">bubble size</label>
+        <input
+          type="range"
+          min="0.01"
+          step="0.1"
+          max="10"
+          bind:value={$settings.bubbleSize}
+        />
+      </div>
+    {/if}
+  </section>
+  <section>
+    <div>
+      <div class="input-row">
+        <h2>Filters</h2>
+        <button on:click={addFilter}>+</button>
+      </div>
+      {#each $settings.filters as { id, searchString, searchType, searchColor, foundNodeIds } (id)}
+        <div class="filter">
+          <NodeFilter
+            {id}
+            {searchString}
+            {searchColor}
+            {searchType}
+            {foundNodeIds}
+            on:search={handleSearch}
+            on:destroyed={() => removeFilter(id)}
+          />
+          <button on:click={() => removeFilter(id)}>&#x2715</button>
+        </div>
+      {:else}
+        <p class="help-message">Hit plus button to add filters</p>
+      {/each}
+    </div>
+  </section>
+  <section>
+    <h2>Display</h2>
+    <div class="input-row">
+      <label for="labelThreshold">Label threshold</label>
       <input
         type="range"
-        min="1"
-        step="1"
-        max="10"
-        bind:value={$settings.filterLength}
+        min="0"
+        step="0.05"
+        max="50"
+        bind:value={$settings.labelThreshold}
       />
     </div>
-  {/if}
-  <div class="input-row">
-    <label for="size">Size</label>
-    <select id="size" name="size" bind:value={$settings.size}>
-      <option selected value="in">inbound links</option>
-      <option value="out">outbound links</option>
-    </select>
-  </div>
+    <div class="input-row">
+      <label for="freezeSimulation">Freeze Simulation</label>
+      <input type="checkbox" bind:checked={$settings.freezeSimulation} />
+    </div>
+    {#if $settings.filter}
+      <div class="input-row">
+        <label for="nhops">n hops</label>
+        <input
+          type="range"
+          min="1"
+          step="1"
+          max="10"
+          bind:value={$settings.filterLength}
+        />
+      </div>
+    {/if}
+    <div class="input-row">
+      <label for="size">Size</label>
+      <select id="size" name="size" bind:value={$settings.size}>
+        <option selected value="in">inbound links</option>
+        <option value="out">outbound links</option>
+      </select>
+    </div>
   </section>
 </div>
 
@@ -211,7 +187,7 @@
     background-color: var(--theme-secondary-background);
     color: var(--theme-color);
   }
-  :global(input[type=search]) {
+  :global(input[type="search"]) {
     tab-size: 4;
     word-break: break-word;
     border: 0 solid var(--theme-border-color);
@@ -221,23 +197,23 @@
     font: inherit;
     appearance: none;
     background-color: var(--theme-background-color);
-    padding: .5rem .75rem;
-    border-radius: .25rem;
-    padding-left: .5rem;
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.25rem;
+    padding-left: 0.5rem;
     border-width: 1px;
     outline: 2px solid transparent;
     outline-offset: 2px;
-    font-size: .75rem;
+    font-size: 0.75rem;
     line-height: 1rem;
-    padding-bottom: .25rem;
-    padding-top: .25rem;
+    padding-bottom: 0.25rem;
+    padding-top: 0.25rem;
     width: 100%;
   }
-  input[type=search]:focus {
-    box-shadow: 0 0 0 2px rgba(164,202,254,.45);
+  input[type="search"]:focus {
+    box-shadow: 0 0 0 2px rgba(164, 202, 254, 0.45);
     border-color: #2563eb;
   }
-  input[type=checkbox] {
+  input[type="checkbox"] {
     width: 1rem;
     height: 1rem;
     margin-right: 0.5rem;
@@ -250,12 +226,11 @@
     border: 1px solid var(--theme-border-color);
     background-color: var(--theme-background-color);
     color: var(--theme-color);
-
   }
   select:focus {
     outline: 2px solid transparent;
     outline-offset: 2px;
-    box-shadow: 0 0 0 2px rgba(164,202,254,.45);
+    box-shadow: 0 0 0 2px rgba(164, 202, 254, 0.45);
     border-color: #2563eb;
   }
   label {
@@ -296,5 +271,4 @@
     font-size: 0.8rem;
     color: #a3a3a3;
   }
-
 </style>
