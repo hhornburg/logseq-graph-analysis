@@ -47,14 +47,10 @@
 
 <form class="search-input" on:input={handleInput}>
   <div>
-    <input
-      type="search"
-      bind:value={searchString}
-      placeholder="Search"
-    />
+    <input type="search" bind:value={searchString} placeholder="Search" />
   </div>
   {#if !filterSearchResults}
-      <span> <input type="color" bind:value={searchColor} /> </span>
+    <span> <input type="color" bind:value={searchColor} /> </span>
   {/if}
 </form>
 
@@ -92,7 +88,7 @@
     margin: 0;
     padding: 0;
   }
-  input[type=search] {
+  input[type="search"] {
     tab-size: 4;
     word-break: break-word;
     border: 0 solid var(--theme-border-color);
@@ -102,20 +98,20 @@
     font: inherit;
     appearance: none;
     background-color: var(--theme-background-color);
-    padding: .5rem .75rem;
-    border-radius: .25rem;
-    padding-left: .5rem;
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.25rem;
+    padding-left: 0.5rem;
     border-width: 1px;
     outline: 2px solid transparent;
     outline-offset: 2px;
-    font-size: .75rem;
+    font-size: 0.75rem;
     line-height: 1rem;
-    padding-bottom: .25rem;
-    padding-top: .25rem;
-    width: 100%;
+    padding-bottom: 0.25rem;
+    padding-top: 0.25rem;
+    width: 15rem;
   }
-  input[type=search]:focus {
-    box-shadow: 0 0 0 2px rgba(164,202,254,.45);
+  input[type="search"]:focus {
+    box-shadow: 0 0 0 2px rgba(164, 202, 254, 0.45);
     border-color: #2563eb;
   }
 </style>
