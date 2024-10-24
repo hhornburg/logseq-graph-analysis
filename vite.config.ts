@@ -19,12 +19,12 @@ export default defineConfig({
   resolve: {
     alias: [
       {
-        find: '@', replacement: path.resolve(__dirname, '/src')
+        find: '@', replacement: path.resolve(__dirname, './src')
       }
     ]
   },
   test: {
-    includeSource: ["src/**/*.{ts,tsx}"],
+    includeSource: ["./src/**/*.{ts,tsx}"],
     coverage: {
       reporter: ["text", "html"],
     },
